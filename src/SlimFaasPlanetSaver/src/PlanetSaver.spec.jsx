@@ -17,7 +17,7 @@ describe('PlanetSaver Component', () => {
 
     it('Should display SlimFaasPlanetSaver', async () => {
         const handleVisibilityChange = vi.fn();
-        render(<PlanetSaver baseUrl={baseUrl} fetch={mockFetch(false)} noActivityTimeout={5000} >Child Component</PlanetSaver>);
+        const { unmount } = render(<PlanetSaver baseUrl={baseUrl} fetch={mockFetch(false)} noActivityTimeout={5000} >Child Component</PlanetSaver>);
 
         await waitFor(() => screen.getByText('🌳 Starting the environment.... 🌳'));
         expect(screen.getByText('🌳 Starting the environment.... 🌳')).toBeTruthy();
@@ -42,17 +42,17 @@ describe('PlanetSaver Component', () => {
         expect(screen.getByText('🌳 Starting the environment.... 🌳')).toBeTruthy();
         screen.debug();
 
-        render(null);
+        unmount();
 
     }, {timeout: 40000} );
 
     it('Should display SlimFaasPlanetSaver Error', async () => {
-        render(<PlanetSaver baseUrl={baseUrl} fetch={mockFetch(true, 1)} noActivityTimeout={10000} >Child Component</PlanetSaver>);
+        const { unmount } = render(<PlanetSaver baseUrl={baseUrl} fetch={mockFetch(true, 1)} noActivityTimeout={10000} >Child Component</PlanetSaver>);
         await waitFor(() => screen.getByText('An error occurred when starting environment. Please contact an administrator.'), { timeout: 10000 });
         expect(screen.getByText('An error occurred when starting environment. Please contact an administrator.')).toBeTruthy();
         screen.debug();
 
-        render(null);
+        unmount();
     }, {timeout: 20000} );
 
 });
